@@ -1660,7 +1660,7 @@
             }
             return dispatcher.useContext(Context2);
           }
-          function useState(initialState) {
+          function useState2(initialState) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useState(initialState);
           }
@@ -1668,11 +1668,11 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useReducer(reducer, initialArg, init);
           }
-          function useRef(initialValue) {
+          function useRef2(initialValue) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect(create, deps) {
+          function useEffect2(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -2454,15 +2454,15 @@
           exports.useContext = useContext;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect;
+          exports.useEffect = useEffect2;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
           exports.useLayoutEffect = useLayoutEffect;
           exports.useMemo = useMemo;
           exports.useReducer = useReducer;
-          exports.useRef = useRef;
-          exports.useState = useState;
+          exports.useRef = useRef2;
+          exports.useState = useState2;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
           exports.version = ReactVersion;
@@ -30310,7 +30310,32 @@
 
   // app/javascript/home/view.tsx
   var Homepage = () => {
-    return /* @__PURE__ */ import_react.default.createElement(import_react.default.Fragment, null, /* @__PURE__ */ import_react.default.createElement("header", null, /* @__PURE__ */ import_react.default.createElement("a", { href: "https://www.amazon.com/Minimalist-Entrepreneur-Great-Founders-More/dp/0593192397" }, /* @__PURE__ */ import_react.default.createElement("img", { src: "/book.png", alt: "book", loading: "lazy" })), /* @__PURE__ */ import_react.default.createElement("h1", null, "Ask My Book")), /* @__PURE__ */ import_react.default.createElement("main", null, /* @__PURE__ */ import_react.default.createElement("p", { className: "credits" }, "This is an experiment in using AI to make my book's content more accessible. Ask a question and AI'll answer it in real-time:"), /* @__PURE__ */ import_react.default.createElement("form", null, /* @__PURE__ */ import_react.default.createElement("textarea", { defaultValue: DEFAULT_QUESTION }), /* @__PURE__ */ import_react.default.createElement("div", { className: "buttons" }, /* @__PURE__ */ import_react.default.createElement("button", { type: "submit" }, "Ask question"), /* @__PURE__ */ import_react.default.createElement("button", { className: "lucky-button", type: "button" }, "I'm feeling lucky")))), /* @__PURE__ */ import_react.default.createElement("footer", null, /* @__PURE__ */ import_react.default.createElement("p", null, "Project by ", /* @__PURE__ */ import_react.default.createElement("a", { href: "https://twitter.com/shl" }, "Sahil Lavingia"), " \u2022", " ", /* @__PURE__ */ import_react.default.createElement("a", { href: "https://github.com/slavingia/askmybook" }, "Fork on GitHub"))));
+    const questionRef = (0, import_react.useRef)(null);
+    const [result, setResult] = (0, import_react.useState)();
+    const [error2, setError] = (0, import_react.useState)();
+    (0, import_react.useEffect)(() => {
+      const [_, questionId] = window.location.pathname.match(/\/question\/(\w+)/i) || [];
+      if (questionId) {
+        if (Number.isNaN(parseInt(questionId))) {
+          setError("Please enter a numeric question ID.");
+        } else {
+          getQuestionOfId(questionId);
+        }
+      }
+    }, []);
+    async function getQuestionOfId(id) {
+      try {
+        const res = await fetch(`/api/question/${id}`);
+        const json = await res.json();
+        setResult(json);
+        if (questionRef.current) {
+          questionRef.current.value = json.question;
+        }
+      } catch (e) {
+        setError(`A question with an ID of ${id} does not exist.`);
+      }
+    }
+    return /* @__PURE__ */ import_react.default.createElement(import_react.default.Fragment, null, /* @__PURE__ */ import_react.default.createElement("header", null, /* @__PURE__ */ import_react.default.createElement("a", { href: "https://www.amazon.com/Minimalist-Entrepreneur-Great-Founders-More/dp/0593192397" }, /* @__PURE__ */ import_react.default.createElement("img", { src: "/book.png", alt: "book", loading: "lazy" })), /* @__PURE__ */ import_react.default.createElement("h1", null, "Ask My Book")), error2 && /* @__PURE__ */ import_react.default.createElement("div", { className: "error" }, error2), /* @__PURE__ */ import_react.default.createElement("main", null, /* @__PURE__ */ import_react.default.createElement("p", { className: "credits" }, "This is an experiment in using AI to make my book's content more accessible. Ask a question and AI'll answer it in real-time:"), /* @__PURE__ */ import_react.default.createElement("form", null, /* @__PURE__ */ import_react.default.createElement("textarea", { defaultValue: DEFAULT_QUESTION, ref: questionRef }), result ? /* @__PURE__ */ import_react.default.createElement(import_react.default.Fragment, null, /* @__PURE__ */ import_react.default.createElement("div", { className: "answer-container" }, /* @__PURE__ */ import_react.default.createElement("p", null, /* @__PURE__ */ import_react.default.createElement("strong", null, "Answer:"), " ", /* @__PURE__ */ import_react.default.createElement("span", null, result.answer)), /* @__PURE__ */ import_react.default.createElement("button", null, "Ask another question"))) : /* @__PURE__ */ import_react.default.createElement("div", { className: "buttons", style: result ? { display: "none" } : void 0 }, /* @__PURE__ */ import_react.default.createElement("button", { type: "submit" }, "Ask question"), /* @__PURE__ */ import_react.default.createElement("button", { className: "lucky-button", type: "button" }, "I'm feeling lucky")))), /* @__PURE__ */ import_react.default.createElement("footer", null, /* @__PURE__ */ import_react.default.createElement("p", null, "Project by ", /* @__PURE__ */ import_react.default.createElement("a", { href: "https://twitter.com/shl" }, "Sahil Lavingia"), " \u2022", " ", /* @__PURE__ */ import_react.default.createElement("a", { href: "https://github.com/slavingia/askmybook" }, "Fork on GitHub"))));
   };
 
   // app/javascript/application.js

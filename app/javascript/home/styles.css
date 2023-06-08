@@ -29,6 +29,17 @@ header h1 {
   color: #777;
 }
 
+.error {
+  text-align: center;
+  background: #bd4e4e;
+  color: white;
+  padding: 0.8rem;
+  margin: 1rem auto;
+  border-radius: 10px;
+  max-width: 600px;
+  box-sizing: border-box;
+}
+
 main {
   margin: 1rem auto;
   max-width: 600px;
