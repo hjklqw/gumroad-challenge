@@ -1,24 +1,58 @@
-# README
+# Running locally
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Please follow the following headers and steps in order.
 
-Things you may want to cover:
+## 1. Fundamental setup
 
-* Ruby version
+1. Ensure you have the following installed on your system:
 
-* System dependencies
+- Ruby
+- yarn
+- PostgreSQL
 
-* Configuration
+2. Create an `.env` file using the below sample:
 
-* Database creation
+```
+OPENAI_API_KEY=sk-123456
+PDF_NAME=book.pdf
+```
 
-* Database initialization
+Note that `PDF_NAME` will be used in both the PDF to CSV script, and the application itself.
 
-* How to run the test suite
+Also ensure that PostgreSQL is running, and that you have the following environment variables:
 
-* Services (job queues, cache servers, search engines, etc.)
+- `POSTGRES_USERNAME`
+- `POSTGRES_PASSWORD`
 
-* Deployment instructions
+3. Install dependencies
 
-* ...
+```
+bundle
+```
+
+## 2. Running the PDF to CSV script
+
+1. Add your PDf file to the root of the project.
+2. Run the following:
+
+```
+ruby scripts/pdf_to_pages_embeddings.rb
+```
+
+Ensure that the name of your PDf has either been set in `.env`, or is given via a `--pdf` parameter to that script.
+
+## 3. Running the application
+
+1. Move the generated files from the above script into `/app/assets/csvs`.
+
+2. Setup DB
+
+```
+rake db:setup
+```
+
+3. Run app
+
+```
+bin/dev
+```
