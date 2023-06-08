@@ -1,0 +1,11 @@
+html {
+  font-family: system-ui;
+  font-size: clamp(1em, 0.909em + 0.45vmin, 1.25em);
+  max-width: 70ch;
+  padding: calc(1vmin + 0.5rem);
+  margin-inline: auto;
+}
+
+body {
+  line-height: 1.75;
+}

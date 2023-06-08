@@ -30304,7 +30304,14 @@
 
   // app/javascript/home/view.tsx
   var import_react = __toESM(require_react());
-  var Homepage = () => /* @__PURE__ */ import_react.default.createElement("div", null, "Homepage");
+
+  // app/javascript/home/data.ts
+  var DEFAULT_QUESTION = "What is The Minimalist Entrepreneur about?";
+
+  // app/javascript/home/view.tsx
+  var Homepage = () => {
+    return /* @__PURE__ */ import_react.default.createElement(import_react.default.Fragment, null, /* @__PURE__ */ import_react.default.createElement("header", null, /* @__PURE__ */ import_react.default.createElement("a", { href: "https://www.amazon.com/Minimalist-Entrepreneur-Great-Founders-More/dp/0593192397" }, /* @__PURE__ */ import_react.default.createElement("img", { src: "/book.png", alt: "book", loading: "lazy" })), /* @__PURE__ */ import_react.default.createElement("h1", null, "Ask My Book")), /* @__PURE__ */ import_react.default.createElement("main", null, /* @__PURE__ */ import_react.default.createElement("p", { className: "credits" }, "This is an experiment in using AI to make my book's content more accessible. Ask a question and AI'll answer it in real-time:"), /* @__PURE__ */ import_react.default.createElement("form", null, /* @__PURE__ */ import_react.default.createElement("textarea", { defaultValue: DEFAULT_QUESTION }), /* @__PURE__ */ import_react.default.createElement("div", { className: "buttons" }, /* @__PURE__ */ import_react.default.createElement("button", { type: "submit" }, "Ask question"), /* @__PURE__ */ import_react.default.createElement("button", { className: "lucky-button", type: "button" }, "I'm feeling lucky")))), /* @__PURE__ */ import_react.default.createElement("footer", null, /* @__PURE__ */ import_react.default.createElement("p", null, "Project by ", /* @__PURE__ */ import_react.default.createElement("a", { href: "https://twitter.com/shl" }, "Sahil Lavingia"), " \u2022", " ", /* @__PURE__ */ import_react.default.createElement("a", { href: "https://github.com/slavingia/askmybook" }, "Fork on GitHub"))));
+  };
 
   // app/javascript/application.js
   document.addEventListener("turbo:load", () => {
