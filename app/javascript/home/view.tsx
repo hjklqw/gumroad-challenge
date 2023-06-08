@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 
+import { useTypewriterEffect } from '../shared/useTypewriterEffect'
+
 import './styles.css'
 
-import { DEFAULT_QUESTION } from './data'
+import { DEFAULT_QUESTION, LUCKY_QUESTIONS } from './data'
 import { Question } from './models'
-import { useTypewriterEffect } from '../shared/useTypewriterEffect'
 
 export const Homepage = () => {
   const questionRef = useRef<HTMLTextAreaElement>(null)
@@ -88,6 +89,16 @@ export const Homepage = () => {
     questionRef.current?.focus()
   }
 
+  async function askLuckyQuestion(e: React.MouseEvent) {
+    const randomQuestionIndex = ~~(Math.random() * LUCKY_QUESTIONS.length)
+    const question = LUCKY_QUESTIONS[randomQuestionIndex]
+    if (questionRef.current) {
+      questionRef.current.value = question
+    }
+
+    await ask(e)
+  }
+
   return (
     <>
       <header>
@@ -124,7 +135,7 @@ export const Homepage = () => {
               <button type="submit" disabled={isLoading}>
                 {isLoading ? 'Asking...' : 'Ask question'}
               </button>
-              <button className="lucky-button" type="button">
+              <button className="lucky-button" type="button" onClick={askLuckyQuestion}>
                 I'm feeling lucky
               </button>
             </div>

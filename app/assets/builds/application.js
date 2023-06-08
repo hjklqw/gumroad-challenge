@@ -30305,9 +30305,6 @@
   // app/javascript/home/view.tsx
   var import_react2 = __toESM(require_react());
 
-  // app/javascript/home/data.ts
-  var DEFAULT_QUESTION = "What is The Minimalist Entrepreneur about?";
-
   // app/javascript/shared/useTypewriterEffect.ts
   var import_react = __toESM(require_react());
   function randomInteger(min, max) {
@@ -30355,6 +30352,14 @@
       isTypewriterEffectFinished: currCharacterIndex === text?.length
     };
   }
+
+  // app/javascript/home/data.ts
+  var DEFAULT_QUESTION = "What is The Minimalist Entrepreneur about?";
+  var LUCKY_QUESTIONS = [
+    "What is a minimalist entrepreneur?",
+    "What is your definition of community?",
+    "How do I decide what kind of business I should start?"
+  ];
 
   // app/javascript/home/view.tsx
   var Homepage = () => {
@@ -30424,7 +30429,15 @@
       questionRef.current?.select();
       questionRef.current?.focus();
     }
-    return /* @__PURE__ */ import_react2.default.createElement(import_react2.default.Fragment, null, /* @__PURE__ */ import_react2.default.createElement("header", null, /* @__PURE__ */ import_react2.default.createElement("a", { href: "https://www.amazon.com/Minimalist-Entrepreneur-Great-Founders-More/dp/0593192397" }, /* @__PURE__ */ import_react2.default.createElement("img", { src: "/book.png", alt: "book", loading: "lazy" })), /* @__PURE__ */ import_react2.default.createElement("h1", null, "Ask My Book")), error2 && /* @__PURE__ */ import_react2.default.createElement("div", { className: "error" }, error2), /* @__PURE__ */ import_react2.default.createElement("main", null, /* @__PURE__ */ import_react2.default.createElement("p", { className: "credits" }, "This is an experiment in using AI to make my book's content more accessible. Ask a question and AI'll answer it in real-time:"), /* @__PURE__ */ import_react2.default.createElement("form", { onSubmit: ask }, /* @__PURE__ */ import_react2.default.createElement("textarea", { defaultValue: DEFAULT_QUESTION, ref: questionRef }), result ? /* @__PURE__ */ import_react2.default.createElement(import_react2.default.Fragment, null, /* @__PURE__ */ import_react2.default.createElement("div", { className: "answer-container" }, /* @__PURE__ */ import_react2.default.createElement("p", null, /* @__PURE__ */ import_react2.default.createElement("strong", null, "Answer:"), " ", /* @__PURE__ */ import_react2.default.createElement("span", null, typewrittenResult)), isTypewriterEffectFinished && /* @__PURE__ */ import_react2.default.createElement("button", { onClick: askAnotherQuestion }, "Ask another question"))) : /* @__PURE__ */ import_react2.default.createElement("div", { className: "buttons", style: result ? { display: "none" } : void 0 }, /* @__PURE__ */ import_react2.default.createElement("button", { type: "submit", disabled: isLoading }, isLoading ? "Asking..." : "Ask question"), /* @__PURE__ */ import_react2.default.createElement("button", { className: "lucky-button", type: "button" }, "I'm feeling lucky")))), /* @__PURE__ */ import_react2.default.createElement("footer", null, /* @__PURE__ */ import_react2.default.createElement("p", null, "Project by ", /* @__PURE__ */ import_react2.default.createElement("a", { href: "https://twitter.com/shl" }, "Sahil Lavingia"), " \u2022", " ", /* @__PURE__ */ import_react2.default.createElement("a", { href: "https://github.com/slavingia/askmybook" }, "Fork on GitHub"))));
+    async function askLuckyQuestion(e) {
+      const randomQuestionIndex = ~~(Math.random() * LUCKY_QUESTIONS.length);
+      const question = LUCKY_QUESTIONS[randomQuestionIndex];
+      if (questionRef.current) {
+        questionRef.current.value = question;
+      }
+      await ask(e);
+    }
+    return /* @__PURE__ */ import_react2.default.createElement(import_react2.default.Fragment, null, /* @__PURE__ */ import_react2.default.createElement("header", null, /* @__PURE__ */ import_react2.default.createElement("a", { href: "https://www.amazon.com/Minimalist-Entrepreneur-Great-Founders-More/dp/0593192397" }, /* @__PURE__ */ import_react2.default.createElement("img", { src: "/book.png", alt: "book", loading: "lazy" })), /* @__PURE__ */ import_react2.default.createElement("h1", null, "Ask My Book")), error2 && /* @__PURE__ */ import_react2.default.createElement("div", { className: "error" }, error2), /* @__PURE__ */ import_react2.default.createElement("main", null, /* @__PURE__ */ import_react2.default.createElement("p", { className: "credits" }, "This is an experiment in using AI to make my book's content more accessible. Ask a question and AI'll answer it in real-time:"), /* @__PURE__ */ import_react2.default.createElement("form", { onSubmit: ask }, /* @__PURE__ */ import_react2.default.createElement("textarea", { defaultValue: DEFAULT_QUESTION, ref: questionRef }), result ? /* @__PURE__ */ import_react2.default.createElement(import_react2.default.Fragment, null, /* @__PURE__ */ import_react2.default.createElement("div", { className: "answer-container" }, /* @__PURE__ */ import_react2.default.createElement("p", null, /* @__PURE__ */ import_react2.default.createElement("strong", null, "Answer:"), " ", /* @__PURE__ */ import_react2.default.createElement("span", null, typewrittenResult)), isTypewriterEffectFinished && /* @__PURE__ */ import_react2.default.createElement("button", { onClick: askAnotherQuestion }, "Ask another question"))) : /* @__PURE__ */ import_react2.default.createElement("div", { className: "buttons", style: result ? { display: "none" } : void 0 }, /* @__PURE__ */ import_react2.default.createElement("button", { type: "submit", disabled: isLoading }, isLoading ? "Asking..." : "Ask question"), /* @__PURE__ */ import_react2.default.createElement("button", { className: "lucky-button", type: "button", onClick: askLuckyQuestion }, "I'm feeling lucky")))), /* @__PURE__ */ import_react2.default.createElement("footer", null, /* @__PURE__ */ import_react2.default.createElement("p", null, "Project by ", /* @__PURE__ */ import_react2.default.createElement("a", { href: "https://twitter.com/shl" }, "Sahil Lavingia"), " \u2022", " ", /* @__PURE__ */ import_react2.default.createElement("a", { href: "https://github.com/slavingia/askmybook" }, "Fork on GitHub"))));
   };
 
   // app/javascript/application.js
