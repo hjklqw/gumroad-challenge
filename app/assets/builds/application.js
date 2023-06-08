@@ -1660,7 +1660,7 @@
             }
             return dispatcher.useContext(Context2);
           }
-          function useState2(initialState) {
+          function useState3(initialState) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useState(initialState);
           }
@@ -1668,11 +1668,11 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useReducer(reducer, initialArg, init);
           }
-          function useRef2(initialValue) {
+          function useRef3(initialValue) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect2(create, deps) {
+          function useEffect3(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -2454,15 +2454,15 @@
           exports.useContext = useContext;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect2;
+          exports.useEffect = useEffect3;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
           exports.useLayoutEffect = useLayoutEffect;
           exports.useMemo = useMemo;
           exports.useReducer = useReducer;
-          exports.useRef = useRef2;
-          exports.useState = useState2;
+          exports.useRef = useRef3;
+          exports.useState = useState3;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
           exports.version = ReactVersion;
@@ -30299,21 +30299,76 @@
   window.Stimulus = application;
 
   // app/javascript/application.js
-  var import_react2 = __toESM(require_react());
+  var import_react3 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
   // app/javascript/home/view.tsx
-  var import_react = __toESM(require_react());
+  var import_react2 = __toESM(require_react());
 
   // app/javascript/home/data.ts
   var DEFAULT_QUESTION = "What is The Minimalist Entrepreneur about?";
 
+  // app/javascript/shared/useTypewriterEffect.ts
+  var import_react = __toESM(require_react());
+  function randomInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  function useTypewriterEffect() {
+    const [currCharacterIndex, setCurrCharacterIndex] = (0, import_react.useState)(0);
+    const [text, setText] = (0, import_react.useState)();
+    const intervalId = (0, import_react.useRef)();
+    (0, import_react.useEffect)(() => {
+      return () => {
+        if (intervalId.current) {
+          clearInterval(intervalId.current);
+        }
+      };
+    }, []);
+    function startTypewriterEffect(text2) {
+      setText(text2);
+      const numCharacters = text2.length;
+      setCurrCharacterIndex(0);
+      const interval = randomInteger(30, 70);
+      intervalId.current = setInterval(() => {
+        setCurrCharacterIndex((v) => {
+          if (v === numCharacters) {
+            clearInterval(intervalId.current);
+            return v;
+          }
+          return v + 1;
+        });
+      }, interval);
+    }
+    function bypassTypewriterEffect(text2) {
+      setText(text2);
+      setCurrCharacterIndex(text2.length);
+    }
+    return {
+      startTypewriterEffect,
+      /**
+       * Just display the final text, rather than typing it out.
+       * Useful for situations where the `text` property returned from this hook
+       * is used in display; this avoids the need to add checks or use other variables.
+       */
+      bypassTypewriterEffect,
+      text: text?.substring(0, currCharacterIndex),
+      isTypewriterEffectFinished: currCharacterIndex === text?.length
+    };
+  }
+
   // app/javascript/home/view.tsx
   var Homepage = () => {
-    const questionRef = (0, import_react.useRef)(null);
-    const [result, setResult] = (0, import_react.useState)();
-    const [error2, setError] = (0, import_react.useState)();
-    (0, import_react.useEffect)(() => {
+    const questionRef = (0, import_react2.useRef)(null);
+    const [result, setResult] = (0, import_react2.useState)();
+    const [isLoading, setLoading] = (0, import_react2.useState)(false);
+    const [error2, setError] = (0, import_react2.useState)();
+    const {
+      startTypewriterEffect,
+      bypassTypewriterEffect,
+      text: typewrittenResult,
+      isTypewriterEffectFinished
+    } = useTypewriterEffect();
+    (0, import_react2.useEffect)(() => {
       const [_, questionId] = window.location.pathname.match(/\/question\/(\w+)/i) || [];
       if (questionId) {
         if (Number.isNaN(parseInt(questionId))) {
@@ -30328,6 +30383,7 @@
         const res = await fetch(`/api/question/${id}`);
         const json = await res.json();
         setResult(json);
+        bypassTypewriterEffect(json.answer);
         if (questionRef.current) {
           questionRef.current.value = json.question;
         }
@@ -30335,13 +30391,46 @@
         setError(`A question with an ID of ${id} does not exist.`);
       }
     }
-    return /* @__PURE__ */ import_react.default.createElement(import_react.default.Fragment, null, /* @__PURE__ */ import_react.default.createElement("header", null, /* @__PURE__ */ import_react.default.createElement("a", { href: "https://www.amazon.com/Minimalist-Entrepreneur-Great-Founders-More/dp/0593192397" }, /* @__PURE__ */ import_react.default.createElement("img", { src: "/book.png", alt: "book", loading: "lazy" })), /* @__PURE__ */ import_react.default.createElement("h1", null, "Ask My Book")), error2 && /* @__PURE__ */ import_react.default.createElement("div", { className: "error" }, error2), /* @__PURE__ */ import_react.default.createElement("main", null, /* @__PURE__ */ import_react.default.createElement("p", { className: "credits" }, "This is an experiment in using AI to make my book's content more accessible. Ask a question and AI'll answer it in real-time:"), /* @__PURE__ */ import_react.default.createElement("form", null, /* @__PURE__ */ import_react.default.createElement("textarea", { defaultValue: DEFAULT_QUESTION, ref: questionRef }), result ? /* @__PURE__ */ import_react.default.createElement(import_react.default.Fragment, null, /* @__PURE__ */ import_react.default.createElement("div", { className: "answer-container" }, /* @__PURE__ */ import_react.default.createElement("p", null, /* @__PURE__ */ import_react.default.createElement("strong", null, "Answer:"), " ", /* @__PURE__ */ import_react.default.createElement("span", null, result.answer)), /* @__PURE__ */ import_react.default.createElement("button", null, "Ask another question"))) : /* @__PURE__ */ import_react.default.createElement("div", { className: "buttons", style: result ? { display: "none" } : void 0 }, /* @__PURE__ */ import_react.default.createElement("button", { type: "submit" }, "Ask question"), /* @__PURE__ */ import_react.default.createElement("button", { className: "lucky-button", type: "button" }, "I'm feeling lucky")))), /* @__PURE__ */ import_react.default.createElement("footer", null, /* @__PURE__ */ import_react.default.createElement("p", null, "Project by ", /* @__PURE__ */ import_react.default.createElement("a", { href: "https://twitter.com/shl" }, "Sahil Lavingia"), " \u2022", " ", /* @__PURE__ */ import_react.default.createElement("a", { href: "https://github.com/slavingia/askmybook" }, "Fork on GitHub"))));
+    async function ask(e) {
+      e.preventDefault();
+      const question = questionRef.current?.value || "";
+      if (question === "") {
+        alert("Please ask a question!");
+        return;
+      }
+      setLoading(true);
+      try {
+        const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") || "";
+        const res = await fetch("/api/ask", {
+          method: "POST",
+          headers: {
+            "X-CSRF-Token": token,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ question })
+        });
+        const json = await res.json();
+        setResult(json);
+        startTypewriterEffect(json.answer);
+        setError(void 0);
+        history.pushState(void 0, "", `/question/${json.id}`);
+      } catch (e2) {
+        setError("A server error has occured; please try again later.");
+      }
+      setLoading(false);
+    }
+    function askAnotherQuestion() {
+      setResult(void 0);
+      questionRef.current?.select();
+      questionRef.current?.focus();
+    }
+    return /* @__PURE__ */ import_react2.default.createElement(import_react2.default.Fragment, null, /* @__PURE__ */ import_react2.default.createElement("header", null, /* @__PURE__ */ import_react2.default.createElement("a", { href: "https://www.amazon.com/Minimalist-Entrepreneur-Great-Founders-More/dp/0593192397" }, /* @__PURE__ */ import_react2.default.createElement("img", { src: "/book.png", alt: "book", loading: "lazy" })), /* @__PURE__ */ import_react2.default.createElement("h1", null, "Ask My Book")), error2 && /* @__PURE__ */ import_react2.default.createElement("div", { className: "error" }, error2), /* @__PURE__ */ import_react2.default.createElement("main", null, /* @__PURE__ */ import_react2.default.createElement("p", { className: "credits" }, "This is an experiment in using AI to make my book's content more accessible. Ask a question and AI'll answer it in real-time:"), /* @__PURE__ */ import_react2.default.createElement("form", { onSubmit: ask }, /* @__PURE__ */ import_react2.default.createElement("textarea", { defaultValue: DEFAULT_QUESTION, ref: questionRef }), result ? /* @__PURE__ */ import_react2.default.createElement(import_react2.default.Fragment, null, /* @__PURE__ */ import_react2.default.createElement("div", { className: "answer-container" }, /* @__PURE__ */ import_react2.default.createElement("p", null, /* @__PURE__ */ import_react2.default.createElement("strong", null, "Answer:"), " ", /* @__PURE__ */ import_react2.default.createElement("span", null, typewrittenResult)), isTypewriterEffectFinished && /* @__PURE__ */ import_react2.default.createElement("button", { onClick: askAnotherQuestion }, "Ask another question"))) : /* @__PURE__ */ import_react2.default.createElement("div", { className: "buttons", style: result ? { display: "none" } : void 0 }, /* @__PURE__ */ import_react2.default.createElement("button", { type: "submit", disabled: isLoading }, isLoading ? "Asking..." : "Ask question"), /* @__PURE__ */ import_react2.default.createElement("button", { className: "lucky-button", type: "button" }, "I'm feeling lucky")))), /* @__PURE__ */ import_react2.default.createElement("footer", null, /* @__PURE__ */ import_react2.default.createElement("p", null, "Project by ", /* @__PURE__ */ import_react2.default.createElement("a", { href: "https://twitter.com/shl" }, "Sahil Lavingia"), " \u2022", " ", /* @__PURE__ */ import_react2.default.createElement("a", { href: "https://github.com/slavingia/askmybook" }, "Fork on GitHub"))));
   };
 
   // app/javascript/application.js
   document.addEventListener("turbo:load", () => {
     const root = (0, import_client.createRoot)(document.body.appendChild(document.createElement("div")));
-    root.render(/* @__PURE__ */ import_react2.default.createElement(Homepage, null));
+    root.render(/* @__PURE__ */ import_react3.default.createElement(Homepage, null));
   });
 })();
 /*! Bundled license information:
