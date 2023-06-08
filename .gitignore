@@ -29,3 +29,10 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ignore .env
+.env
+
+# Ignore file for PDF script and generated CSVS
+*.pdf
+/app/assets/csvs
