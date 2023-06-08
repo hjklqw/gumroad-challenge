@@ -36,3 +36,6 @@
 # Ignore file for PDF script and generated CSVS
 *.pdf
 /app/assets/csvs
+
+# Ignore node_modules
+/node_modules

@@ -1,9 +1,8 @@
 Rails.application.routes.draw do
+  get 'homepage/index'
   namespace :api do
     get 'question/:id', to: 'question#get'
   end
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
+  root 'homepage#index'
+  get 'question/:id' => 'homepage#index'
 end
