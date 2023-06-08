@@ -83,6 +83,4 @@ test:
 #
 production:
   <<: *default
-  database: gumroad_challenge_production
-  username: gumroad_challenge
-  password: <%= ENV["GUMROAD_CHALLENGE_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>

@@ -75,3 +75,4 @@ gem 'dotenv-rails', groups: [:development, :test]
 gem "pdf-reader"
 gem "tokenizers"
 gem "ruby-openai"
+gem "matrix"

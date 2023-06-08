@@ -29,13 +29,13 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+/config/credentials/production.key
 
 # Ignore .env
 .env
 
-# Ignore file for PDF script and generated CSVS
+# Ignore file for PDF script
 *.pdf
-/app/assets/csvs
 
 # Ignore node_modules
 /node_modules

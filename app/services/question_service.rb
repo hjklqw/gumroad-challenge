@@ -1,5 +1,4 @@
 require 'csv'
-require 'dotenv/load'
 require 'matrix'
 require_relative './open_ai_service.rb'
 

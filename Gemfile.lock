@@ -140,6 +140,8 @@ GEM
     nio4r (2.5.9)
     nokogiri (1.15.2-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.15.2-x86_64-linux)
+      racc (~> 1.4)
     pdf-reader (2.11.0)
       Ascii85 (~> 1.0)
       afm (~> 0.2.1)
@@ -208,6 +210,7 @@ GEM
     thor (1.2.2)
     timeout (0.3.2)
     tokenizers (0.3.3-x86_64-darwin)
+    tokenizers (0.3.3-x86_64-linux)
     ttfunk (1.7.0)
     turbo-rails (1.4.0)
       actionpack (>= 6.0.0)
@@ -234,6 +237,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-22
+  x86_64-linux
 
 DEPENDENCIES
   bootsnap
@@ -242,6 +246,7 @@ DEPENDENCIES
   dotenv-rails
   jbuilder
   jsbundling-rails
+  matrix
   pdf-reader
   pg (~> 1.1)
   puma (~> 5.0)
