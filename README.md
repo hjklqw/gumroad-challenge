@@ -1,6 +1,10 @@
+A Rails and React version of [Ask My Book](https://askmybook.com/), and its PDF to AI embeddings generation script.
+
+The challenge's context is available [here](https://gumroad.notion.site/Product-engineering-challenge-f7aa85150edd41eeb3537aae4632619f).
+
 # Running locally
 
-Please follow the following headers and steps in order.
+Please follow the headers and steps below in order.
 
 ## 1. Fundamental setup
 
@@ -56,3 +60,17 @@ rake db:setup
 ```
 bin/dev
 ```
+
+# Implementation notes
+
+## Existing functionality
+
+- All existing functionality has been implemented, with the exception of Text-to-Speech, as there was no sufficient free tier
+- The HTML and CSS has been cleaned up and trimmed down (the page still looks the same)
+- The 404 page has also been created. It will not trigger for question routes with a non-numeric ID (ex. `/question/asdf`); this is handled with an on-page error message.
+
+## Extra functionality
+
+- Case-insensitive question-matching is implemented in the backend, both to speed up the retrieval of existing answers, and to avoid making extra OpenAI calls for the same question
+- An error message is displayed on the page if the question ID given is invalid. IDs that are not numeric will get a different error message.
+- An env variable is fed into both the PDF-to-CSV generation script, and the backend of the app, for easier handling when running locally
