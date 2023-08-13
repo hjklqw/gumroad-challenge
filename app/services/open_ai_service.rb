@@ -35,7 +35,6 @@ class OpenAiService
         input: text
       }
     )
-    puts response
     response['data'][0]['embedding']
   end
 
