@@ -56,7 +56,7 @@ def extract_page_to_row(page_text, page_num)
   flattened_content = page_text.split().join(' ')
   num_tokens = $tokenizer.encode(flattened_content).tokens.length + 4
   $generated_page_csv_data << { :title => title, :content => flattened_content }
-  return [title, flattened_content, num_tokens]
+  [title, flattened_content, num_tokens]
 end
 
 def generate_pages
@@ -95,7 +95,7 @@ def get_embeddings_for_page(text)
     }
   )
 
-  return response['data'][0]['embedding']
+  response['data'][0]['embedding']
 end
 
 def generate_embeddings

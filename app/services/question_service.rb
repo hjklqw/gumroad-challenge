@@ -12,10 +12,12 @@ class QuestionService
 
   PDF_NAME = ENV['PDF_NAME'] || 'book.pdf'
   CSVS_FOLDER = 'app/assets/csvs'
+  private_constant :PDF_NAME, :CSVS_FOLDER
 
   MAX_CONTENT_LENGTH = 500
   SEPARATOR = "\n* "
-  SEPARATOR_LENGTH = 3
+  SEPARATOR_LENGTH = SEPARATOR.length
+  private_constant :MAX_CONTENT_LENGTH, :SEPARATOR, :SEPARATOR_LENGTH
 
   PROMPT_HEADER = "Sahil Lavingia is the founder and CEO of Gumroad, and the author of the book The Minimalist Entrepreneur (also known as TME). These are questions and answers by him. Please keep your answers to three sentences maximum, and speak in complete sentences. Stop speaking once your point is made.\n\nContext that may be useful, pulled from The Minimalist Entrepreneur:\n"
   PROMPT_QUESTIONS = [
@@ -30,6 +32,7 @@ class QuestionService
     "\n\n\nQ: What is the best way to distribute surveys to test my product idea\n\nA: I use Google Forms and my email list / Twitter account. Works great and is 100% free.",
     "\n\n\nQ: How do you know, when to quit\n\nA: When I'm bored, no longer learning, not earning enough, getting physically unhealthy, etc… loads of reasons. I think the default should be to “quit” and work on something new. Few things are worth holding your attention for a long period of time."
     ].join('')
+  private_constant :PROMPT_HEADER, :PROMPT_QUESTIONS
 
   # ===================================================
   # Constructor--is called automatically by self.ask(),
@@ -79,14 +82,13 @@ class QuestionService
     previously_asked_question = Question.find_by("lower(question) = ?", @question.downcase)
     if previously_asked_question
       previously_asked_question.update(ask_count: previously_asked_question.ask_count + 1)
-      return previously_asked_question
+      previously_asked_question
     end
   end
 
   def ask_new_question
     answer, context = answer_with_context
-    new_question = Question.create(question: @question, answer: answer, context: context)
-    return new_question
+    Question.create(question: @question, answer: answer, context: context)
   end
 
   # ===================================================
@@ -101,7 +103,7 @@ class QuestionService
   def vector_similarity(x, y)
     vx = Vector.elements(x)
     vy = Vector.elements(y)
-    return vx.inner_product(vy)
+    vx.inner_product(vy)
   end
 
   # Compare the embedding of the question against all of the pre-calculated document embeddings
@@ -117,8 +119,7 @@ class QuestionService
       similarities << [vector_similarity(query_embeddings, document_float_embeddings), title]
     end
 
-    sorted = similarities.sort_by { |s| -s[0] }
-    return sorted
+    similarities.sort_by { |s| -s[0] }
   end
 
   # Reads a CSV file in the asset directory, with the given name suffix, and drops its header row.
@@ -126,7 +127,7 @@ class QuestionService
   # @returns [Array<[row1_col1, row1_col2], [row2_col1, ...]>] The CSV file as a 2D array.
   def read_csv_file(name_suffix)
     path = Rails.root.join(CSVS_FOLDER, "#{PDF_NAME}.#{name_suffix}.csv")
-    return CSV.read(path).drop(1)
+    CSV.read(path).drop(1)
   end
 
   # Get the contents of the Embeddings CSV, as well as the Pages CSV (transformed into a hash.)
@@ -134,7 +135,11 @@ class QuestionService
     embeddings = read_csv_file('embeddings')
     pages = read_csv_file('pages')
 
-    page_rows = pages.map { |row| { :title => row[0], :content => row[1], :num_tokens => row[2].to_i } }
+    page_rows = pages.map { |row| {
+      :title => row[0],
+      :content => row[1],
+      :num_tokens => row[2].to_i
+    } }
 
     return embeddings, page_rows
   end

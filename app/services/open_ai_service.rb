@@ -7,6 +7,7 @@ class OpenAiService
   EMBEDDINGS_MODEL_NAME = 'curie'
   DOC_EMBEDDINGS_MODEL = "text-search-#{EMBEDDINGS_MODEL_NAME}-doc-001"
   QUERY_EMBEDDINGS_MODEL = "text-search-#{EMBEDDINGS_MODEL_NAME}-query-001"
+  private_constant :EMBEDDINGS_MODEL_NAME, :DOC_EMBEDDINGS_MODEL, :QUERY_EMBEDDINGS_MODEL
 
   COMPLETIONS_MODEL = 'text-davinci-003'
   COMPLETIONS_API_PARAMS = {
@@ -15,6 +16,7 @@ class OpenAiService
       max_tokens: 150,
       model: COMPLETIONS_MODEL,
   }
+  private_constant :COMPLETIONS_MODEL, :COMPLETIONS_API_PARAMS
 
   def self.get_completion(text)
     newParams = {
@@ -23,7 +25,7 @@ class OpenAiService
     response = @@client.completions(
       parameters: newParams.merge(COMPLETIONS_API_PARAMS)
     )
-    return response['choices'][0]['text'].strip()
+    response['choices'][0]['text'].strip()
   end
 
   def self.get_embeddings(model, text)
@@ -33,15 +35,16 @@ class OpenAiService
         input: text
       }
     )
-    return response['data'][0]['embedding']
+    puts response
+    response['data'][0]['embedding']
   end
 
   def self.get_query_embeddings(text)
-    return self.get_embeddings(QUERY_EMBEDDINGS_MODEL, text)
+    self.get_embeddings(QUERY_EMBEDDINGS_MODEL, text)
   end
 
   def self.get_doc_embeddings(text)
-    return self.get_embeddings(DOC_EMBEDDINGS_MODEL, text)
+    self.get_embeddings(DOC_EMBEDDINGS_MODEL, text)
   end
 
   class << self
