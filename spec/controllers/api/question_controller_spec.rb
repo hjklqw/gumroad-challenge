@@ -15,7 +15,7 @@ describe Api::QuestionController do
       end
     end
 
-    context "when the ID of a non-existant question is given" do
+    context "when the ID of a non-existent question is given" do
       it "raises a not-found exception" do
         expect{
           get :get, params: { :id => 'invalid-id' }
@@ -26,12 +26,12 @@ describe Api::QuestionController do
 
   describe "#ask" do
     context "when a new question is asked" do
-      it "returns contents of the question, suffixed with a question mark, with answer" do
-        get :ask, params: { :question => "New question" }
+      it "returns contents of the question, with answer" do
+        get :ask, params: { :question => 'New question?' }
         expect(response.status).to eq(200)
 
         new_question = JSON.parse(response.body)
-        expect(new_question['question']).to eq("New question?")
+        expect(new_question['question']).to eq('New question?')
         expect(new_question['answer']).not_to be_empty
       end
     end
