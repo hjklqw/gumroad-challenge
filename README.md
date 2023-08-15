@@ -61,6 +61,12 @@ rake db:setup
 bin/dev
 ```
 
+# Running tests
+
+1. Ensure that all setup from the previous section (aside from step 3) has been completed.
+2. Install RSpec (globally) with `rails g rspec:install` if needed.
+3. Run `rspec`.
+
 # Implementation notes
 
 ## Existing functionality
